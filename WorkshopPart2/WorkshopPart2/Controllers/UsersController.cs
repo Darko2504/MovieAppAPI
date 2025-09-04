@@ -32,6 +32,10 @@ namespace WorkshopPart2.Controllers
             {
                 return BadRequest(e.Message);
             }
+            catch(UserNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
