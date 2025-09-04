@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Implementations
 {
@@ -18,22 +19,35 @@ namespace DataAccess.Implementations
 
         public void Delete(User entity)
         {
-            throw new NotImplementedException();
+            _db.Users.Remove(entity);
+            _db.SaveChanges();
         }
 
         public List<User> GetAll()
         {
-            throw new NotImplementedException();
+            return _db.Users.Include(x => x.MovieList).ToList();
         }
 
         public User GetById(int id)
         {
-            throw new NotImplementedException();
+            return _db.Users.SingleOrDefault(x => x.Id == id);
+
+        }
+
+        public User GetUserByUsername(string username)
+        {
+            return _db.Users.FirstOrDefault(x => x.Username.ToLower() == username.ToLower());
+        }
+
+        public User LoginUser(string username, string hashedPassword)
+        {
+            return _db.Users.FirstOrDefault(x => x.Username.ToLower() == username.ToLower() && x.Password == hashedPassword);
         }
 
         public void Update(User entity)
         {
-            throw new NotImplementedException();
+            _db.Users.Update(entity);
+            _db.SaveChanges();
         }
     }
 }
